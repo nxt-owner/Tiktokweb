@@ -1,9 +1,11 @@
-const express = require('express');
-const axios = require('axios');
-const cheerio = require('cheerio');
-const bodyParser = require('body-parser');
-const path = require('path');
-const fs = require('fs');
+import express from "npm:express";
+import axios from "npm:axios";
+import cheerio from "npm:cheerio";
+import bodyParser from "npm:body-parser";
+import { join, dirname } from "https://deno.land/std/path/mod.ts";
+import { ensureDir } from "https://deno.land/std/fs/mod.ts";
+import { fileURLToPath } from "node:url";
+
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
