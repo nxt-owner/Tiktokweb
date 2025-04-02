@@ -58,13 +58,20 @@ async function handleRequest(req) {
         const formData = await req.formData();
         const videoUrl = formData.get("video_url");
         const links = await getTikTokDownloadLinks(videoUrl);
+        
+        // Create a response for downloading
+        const fileName = "TikTok-Video.mp4"; // This is where we rename the file.
         return new Response(JSON.stringify(links), {
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "Content-Disposition": `attachment; filename="${fileName}"`, // Suggests the new filename for the download
+            },
         });
     }
 
     return new Response("Not Found", { status: 404 });
 }
+
 
 // Start the server
 const PORT = 3000;
