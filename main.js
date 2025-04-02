@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std/http/server.ts";
-import { JSDOM } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
+import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts"; // Correct import for DOMParser
 import { join, dirname } from "https://deno.land/std/path/mod.ts";
 import { ensureDir } from "https://deno.land/std/fs/mod.ts";
 import { fileURLToPath } from "node:url";
@@ -27,12 +27,12 @@ async function getTikTokDownloadLinks(videoUrl) {
 
         const html = await response.text();
 
-        // Parse HTML with deno-dom
-        const dom = new JSDOM(html);
+        // Correct use of DOMParser
+        const doc = new DOMParser().parseFromString(html, "text/html");
         const links = {};
 
         // Extract download links from the page
-        dom.window.document.querySelectorAll('.tk-down-link a').forEach((element) => {
+        doc.querySelectorAll('.tk-down-link a').forEach((element) => {
             const text = element.textContent.trim();
             const href = element.getAttribute('href');
             links[text] = href;
