@@ -1,6 +1,6 @@
 import express from "npm:express";
 import axios from "npm:axios";
-import cheerio from "npm:cheerio";
+import { JSDOM } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts"; // Use Deno's DOM parser
 import { join, dirname } from "https://deno.land/std/path/mod.ts";
 import { ensureDir } from "https://deno.land/std/fs/mod.ts";
 import { fileURLToPath } from "node:url";
@@ -26,11 +26,15 @@ async function getTikTokDownloadLinks(videoUrl) {
 
         const response = await axios.post("https://tiktokio.com/api/v1/tk-htmx", data, { headers });
 
-        const $ = cheerio.load(response.data);
-        let links = {};
+        // Parse HTML with deno-dom
+        const dom = new JSDOM(response.data);
+        const links = {};
 
-        $('.tk-down-link a').each((_, element) => {
-            links[$(element).text().trim()] = $(element).attr('href');
+        // Extract download links from the page
+        dom.window.document.querySelectorAll('.tk-down-link a').forEach((element) => {
+            const text = element.textContent.trim();
+            const href = element.getAttribute('href');
+            links[text] = href;
         });
 
         return links;
