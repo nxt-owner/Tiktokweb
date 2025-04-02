@@ -35,12 +35,7 @@ async function getTikTokDownloadLinks(videoUrl) {
         doc.querySelectorAll('.tk-down-link a').forEach((element) => {
             const text = element.textContent.trim();
             const href = element.getAttribute('href');
-            // Here, we rename the file based on the text (you can modify this logic as needed)
-            const renamedLink = {
-                text: `TikTok-Video-${Date.now()}.mp4`, // Change as needed
-                href: href
-            };
-            links[renamedLink.text] = renamedLink.href;
+            links[text] = href;
         });
 
         return links;
@@ -48,7 +43,6 @@ async function getTikTokDownloadLinks(videoUrl) {
         return { error: "Failed to fetch data" };
     }
 }
-
 
 // Serve static files and handle requests manually
 async function handleRequest(req) {
@@ -64,20 +58,13 @@ async function handleRequest(req) {
         const formData = await req.formData();
         const videoUrl = formData.get("video_url");
         const links = await getTikTokDownloadLinks(videoUrl);
-        
-        // Create a response for downloading
-        const fileName = "TikTok-Video.mp4"; // This is where we rename the file.
         return new Response(JSON.stringify(links), {
-            headers: {
-                "Content-Type": "application/json",
-                "Content-Disposition": `attachment; filename="${fileName}"`, // Suggests the new filename for the download
-            },
+            headers: { "Content-Type": "application/json" },
         });
     }
 
     return new Response("Not Found", { status: 404 });
 }
-
 
 // Start the server
 const PORT = 3000;
