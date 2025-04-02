@@ -1,15 +1,10 @@
-import express from "npm:express";
-import { JSDOM } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts"; // Deno DOM parsing library
+import { serve } from "https://deno.land/std/http/server.ts";
+import { JSDOM } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 import { join, dirname } from "https://deno.land/std/path/mod.ts";
 import { ensureDir } from "https://deno.land/std/fs/mod.ts";
 import { fileURLToPath } from "node:url";
 
-const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static(join(__dirname, "public")));
 
 async function getTikTokDownloadLinks(videoUrl) {
     try {
@@ -31,7 +26,7 @@ async function getTikTokDownloadLinks(videoUrl) {
         });
 
         const html = await response.text();
-        
+
         // Parse HTML with deno-dom
         const dom = new JSDOM(html);
         const links = {};
@@ -49,20 +44,34 @@ async function getTikTokDownloadLinks(videoUrl) {
     }
 }
 
-app.get("/", (req, res) => {
-    res.sendFile(join(__dirname, "public", "index.html"));
-});
+// Serve static files and handle requests manually
+async function handleRequest(req) {
+    const url = new URL(req.url);
+    if (url.pathname === "/") {
+        const htmlContent = await Deno.readTextFile(join(__dirname, "public", "index.html"));
+        return new Response(htmlContent, {
+            headers: { "Content-Type": "text/html" },
+        });
+    }
 
-app.post("/download", async (req, res) => {
-    const videoUrl = req.body.video_url;
-    const links = await getTikTokDownloadLinks(videoUrl);
-    res.json(links);
-});
+    if (url.pathname === "/download" && req.method === "POST") {
+        const formData = await req.formData();
+        const videoUrl = formData.get("video_url");
+        const links = await getTikTokDownloadLinks(videoUrl);
+        return new Response(JSON.stringify(links), {
+            headers: { "Content-Type": "application/json" },
+        });
+    }
 
+    return new Response("Not Found", { status: 404 });
+}
+
+// Start the server
 const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+console.log(`Server running on http://localhost:${PORT}`);
 
-// Ensure public directory exists
 await ensureDir(join(__dirname, "public"));
+const server = serve(handleRequest);
+for await (const req of server) {
+    await handleRequest(req);
+}
