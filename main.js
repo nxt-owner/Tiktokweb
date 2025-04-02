@@ -1,15 +1,16 @@
 import express from "npm:express";
 import axios from "npm:axios";
 import cheerio from "npm:cheerio";
-import bodyParser from "npm:body-parser";
 import { join, dirname } from "https://deno.land/std/path/mod.ts";
 import { ensureDir } from "https://deno.land/std/fs/mod.ts";
 import { fileURLToPath } from "node:url";
 
-
 const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static(join(__dirname, "public")));
 
 async function getTikTokDownloadLinks(videoUrl) {
     try {
@@ -38,11 +39,11 @@ async function getTikTokDownloadLinks(videoUrl) {
     }
 }
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+app.get("/", (req, res) => {
+    res.sendFile(join(__dirname, "public", "index.html"));
 });
 
-app.post('/download', async (req, res) => {
+app.post("/download", async (req, res) => {
     const videoUrl = req.body.video_url;
     const links = await getTikTokDownloadLinks(videoUrl);
     res.json(links);
@@ -52,3 +53,6 @@ const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
+
+// Ensure public directory exists
+await ensureDir(join(__dirname, "public"));
