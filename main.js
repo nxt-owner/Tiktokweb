@@ -71,7 +71,4 @@ const PORT = 3000;
 console.log(`Server running on http://localhost:${PORT}`);
 
 await ensureDir(join(__dirname, "public"));
-const server = serve(handleRequest);
-for await (const req of server) {
-    await handleRequest(req);
-}
+await serve(handleRequest, { port: PORT });
