@@ -131,9 +131,10 @@
         .links {
             margin: 40px 0;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
         }
 
         .links a {
@@ -148,6 +149,9 @@
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
         }
 
         .links a:hover {
@@ -364,6 +368,10 @@
             .instructions {
                 padding: 25px;
             }
+            
+            .links a {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -543,11 +551,12 @@
             });
         });
 
-        // Form submission with enhanced UI feedback
+        // Form submission with actual download links
         document.getElementById('downloadForm').addEventListener('submit', async function(event) {
             event.preventDefault();
             const videoUrl = document.getElementById('video_url').value.trim();
             const submitBtn = event.target.querySelector('button[type="submit"]');
+            const linksContainer = document.getElementById('links');
             
             if (!videoUrl) {
                 // Shake animation for empty input
@@ -558,35 +567,34 @@
                 return;
             }
             
+            // Validate TikTok URL
+            if (!videoUrl.includes('tiktok.com')) {
+                alert('Please enter a valid TikTok URL');
+                return;
+            }
+            
             // Loading state
             submitBtn.disabled = true;
             submitBtn.innerHTML = `
                 <span style="display: inline-block; animation: spin 1s linear infinite;">↻</span> Processing...
             `;
             
-            // Mock API call (replace with actual implementation)
             try {
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                // In a real implementation, you would call your backend API here
+                // For demo purposes, we'll simulate the API response with mock data
+                await new Promise(resolve => setTimeout(resolve, 1500));
                 
-                // Mock response
-                const mockLinks = {
-                    'Download HD (No Watermark)': '#',
-                    'Download with Watermark': '#',
-                    'Download Audio (MP3)': '#',
-                    'Download All (ZIP)': '#'
-                };
-                
-                const linksContainer = document.getElementById('links');
-                linksContainer.innerHTML = '';
-                
-                Object.entries(mockLinks).forEach(([text, url]) => {
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.textContent = text;
-                    link.target = '_blank';
-                    link.addEventListener('click', createRipple);
-                    linksContainer.appendChild(link);
-                });
+                document.getElementById('downloadForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const videoUrl = document.getElementById('video_url').value;
+            const response = await fetch('/download', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({ video_url: videoUrl })
+            });
+            const links = await response.json();
+            document.getElementById('links').innerHTML = Object.keys(links).map(text => `<a href="${links[text]}" target="_blank">${text}</a>`).join('<br>');
+        });
                 
                 // Success animation
                 linksContainer.style.animation = 'fadeIn 0.5s';
