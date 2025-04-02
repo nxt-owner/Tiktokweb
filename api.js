@@ -1,6 +1,5 @@
 import { serve } from "https://deno.land/std/http/server.ts";
 import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts"; // Correct import for DOMParser
-import { URLSearchParams } from "https://deno.land/std/http/mod.ts"; // Use standard library for URLSearchParams
 
 // Function to get TikTok download links
 async function getTikTokDownloadLinks(videoUrl) {
