@@ -1,6 +1,5 @@
 import express from "npm:express";
-import axios from "npm:axios";
-import { JSDOM } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts"; // Use Deno's DOM parser
+import { JSDOM } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts"; // Deno DOM parsing library
 import { join, dirname } from "https://deno.land/std/path/mod.ts";
 import { ensureDir } from "https://deno.land/std/fs/mod.ts";
 import { fileURLToPath } from "node:url";
@@ -24,10 +23,17 @@ async function getTikTokDownloadLinks(videoUrl) {
             "vid": videoUrl
         });
 
-        const response = await axios.post("https://tiktokio.com/api/v1/tk-htmx", data, { headers });
+        // Use fetch instead of axios
+        const response = await fetch("https://tiktokio.com/api/v1/tk-htmx", {
+            method: 'POST',
+            headers: headers,
+            body: data
+        });
 
+        const html = await response.text();
+        
         // Parse HTML with deno-dom
-        const dom = new JSDOM(response.data);
+        const dom = new JSDOM(html);
         const links = {};
 
         // Extract download links from the page
