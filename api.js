@@ -2,7 +2,8 @@ import { serve } from "https://deno.land/std/http/server.ts";
 import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts"; // Correct import for DOMParser
 import { URLSearchParams } from "https://deno.land/std/http/mod.ts"; // Use standard library for URLSearchParams
 
-async function getTikTokDownloadLinks(videoUrl: string) {
+// Function to get TikTok download links
+async function getTikTokDownloadLinks(videoUrl) {
     try {
         const headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
@@ -25,7 +26,7 @@ async function getTikTokDownloadLinks(videoUrl: string) {
 
         // Use DOMParser to extract the links
         const doc = new DOMParser().parseFromString(html, "text/html");
-        const links: { [key: string]: string } = {};
+        const links = {};
 
         // Extract download links from the page
         doc?.querySelectorAll('.tk-down-link a').forEach((element) => {
@@ -41,7 +42,7 @@ async function getTikTokDownloadLinks(videoUrl: string) {
 }
 
 // Handle incoming requests to the API
-async function handleRequest(req: Request) {
+async function handleRequest(req) {
     const url = new URL(req.url);
     
     if (url.pathname === "/download" && req.method === "POST") {
