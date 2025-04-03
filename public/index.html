@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -87,7 +88,8 @@
             font-style: italic;
         }
 
-        input, button {
+        input,
+        button {
             padding: 18px 25px;
             font-size: 1.2em;
             border-radius: 12px;
@@ -103,7 +105,8 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
 
-        input:focus, button:focus {
+        input:focus,
+        button:focus {
             outline: none;
             box-shadow: 0 0 30px rgba(37, 117, 252, 0.7);
             transform: translateY(-3px);
@@ -133,7 +136,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
             width: 100%;
         }
 
@@ -325,9 +327,11 @@
             0% {
                 transform: translateY(0px);
             }
+
             50% {
                 transform: translateY(-15px);
             }
+
             100% {
                 transform: translateY(0px);
             }
@@ -337,6 +341,7 @@
             0% {
                 transform: translate(-50%, -50%);
             }
+
             100% {
                 transform: translate(50%, 50%);
             }
@@ -346,35 +351,37 @@
             .container {
                 padding: 20px;
             }
-            
+
             .logo {
                 font-size: 2em;
             }
-            
+
             h1 {
                 font-size: 1.8em;
             }
-            
-            input, button {
+
+            input,
+            button {
                 width: 90%;
                 padding: 15px;
             }
-            
+
             .feature-card {
                 width: 100%;
                 max-width: 350px;
             }
-            
+
             .instructions {
                 padding: 25px;
             }
-            
+
             .links a {
                 width: 100%;
             }
         }
     </style>
 </head>
+
 <body>
 
     <!-- Custom Cursor System -->
@@ -402,19 +409,22 @@
             <div class="feature-card">
                 <div class="feature-icon">∞</div>
                 <h3 class="feature-title">Unlimited Downloads</h3>
-                <p class="feature-desc">Save as many videos as you need - without any limits or restrictions. Our service is completely free with no hidden costs.</p>
+                <p class="feature-desc">Save as many videos as you need - without any limits or restrictions. Our
+                    service is completely free with no hidden costs.</p>
             </div>
-            
+
             <div class="feature-card">
                 <div class="feature-icon">✗</div>
                 <h3 class="feature-title">No Watermark</h3>
-                <p class="feature-desc">Download TikTok videos without that annoying watermark or remove the TT logo completely for clean, professional-looking videos.</p>
+                <p class="feature-desc">Download TikTok videos without that annoying watermark or remove the TT logo
+                    completely for clean, professional-looking videos.</p>
             </div>
-            
+
             <div class="feature-card">
                 <div class="feature-icon">🎵</div>
                 <h3 class="feature-title">MP4 & MP3</h3>
-                <p class="feature-desc">Get videos in crystal clear HD quality as MP4 files or extract just the audio as MP3 - perfect for creating compilations.</p>
+                <p class="feature-desc">Get videos in crystal clear HD quality as MP4 files or extract just the audio as
+                    MP3 - perfect for creating compilations.</p>
             </div>
         </div>
 
@@ -430,7 +440,8 @@
         </div>
 
         <p class="footer-note">
-            LK-TikTokDownloader is the fastest way to save TikTok videos without watermark. Our service works on all devices and is completely free to use.
+            LK-TikTokDownloader is the fastest way to save TikTok videos without watermark. Our service works on all
+            devices and is completely free to use.
         </p>
     </div>
 
@@ -438,17 +449,17 @@
         // Enhanced Custom Cursor System
         const cursor = document.getElementById('cursor');
         const cursorFollower = document.getElementById('cursorFollower');
-        
+
         document.addEventListener('mousemove', e => {
             cursor.style.left = `${e.clientX}px`;
             cursor.style.top = `${e.clientY}px`;
-            
+
             // Follower with delay
             setTimeout(() => {
                 cursorFollower.style.left = `${e.clientX}px`;
                 cursorFollower.style.top = `${e.clientY}px`;
             }, 100);
-            
+
             // Scale effect on clickable elements
             const target = e.target;
             if (target.closest('button, a, input')) {
@@ -471,7 +482,7 @@
         // Create interactive particles for background
         const particlesContainer = document.getElementById('particles');
         const particleCount = window.innerWidth < 768 ? 30 : 80;
-        
+
         for (let i = 0; i < particleCount; i++) {
             const particle = document.createElement('div');
             const size = Math.random() * 5 + 2;
@@ -480,7 +491,7 @@
             const opacity = Math.random() * 0.5 + 0.1;
             const duration = Math.random() * 25 + 15;
             const delay = Math.random() * 5;
-            
+
             particle.style.cssText = `
                 position: absolute;
                 width: ${size}px;
@@ -492,9 +503,9 @@
                 animation: float ${duration}s infinite ${delay}s ease-in-out;
                 will-change: transform;
             `;
-            
+
             particlesContainer.appendChild(particle);
-            
+
             // Add dynamic keyframes for each particle
             const keyframes = `
                 @keyframes float {
@@ -505,7 +516,7 @@
                     100% { transform: translate(0, 0) rotate(360deg); }
                 }
             `;
-            
+
             const style = document.createElement('style');
             style.innerHTML = keyframes;
             document.head.appendChild(style);
@@ -518,7 +529,7 @@
             const size = Math.max(rect.width, rect.height) * 1.5;
             const x = event.clientX - rect.left - size / 2;
             const y = event.clientY - rect.top - size / 2;
-            
+
             const ripple = document.createElement('span');
             ripple.style.cssText = `
                 position: absolute;
@@ -532,7 +543,7 @@
                 animation: ripple-animation 0.8s linear;
                 pointer-events: none;
             `;
-            
+
             button.appendChild(ripple);
             setTimeout(() => ripple.remove(), 800);
         }
@@ -540,24 +551,24 @@
         // Add ripple effect to interactive elements
         document.querySelectorAll('button, .links a').forEach(element => {
             element.addEventListener('click', createRipple);
-            element.addEventListener('mousedown', function() {
+            element.addEventListener('mousedown', function () {
                 this.style.transform = 'scale(0.98)';
             });
-            element.addEventListener('mouseup', function() {
+            element.addEventListener('mouseup', function () {
                 this.style.transform = '';
             });
-            element.addEventListener('mouseleave', function() {
+            element.addEventListener('mouseleave', function () {
                 this.style.transform = '';
             });
         });
 
         // Form submission with actual download links
-        document.getElementById('downloadForm').addEventListener('submit', async function(event) {
+        document.getElementById('downloadForm').addEventListener('submit', async function (event) {
             event.preventDefault();
             const videoUrl = document.getElementById('video_url').value.trim();
             const submitBtn = event.target.querySelector('button[type="submit"]');
             const linksContainer = document.getElementById('links');
-            
+
             if (!videoUrl) {
                 // Shake animation for empty input
                 const input = document.getElementById('video_url');
@@ -566,40 +577,40 @@
                 setTimeout(() => input.style.animation = '', 500);
                 return;
             }
-            
+
             // Validate TikTok URL
             if (!videoUrl.includes('tiktok.com')) {
                 alert('Please enter a valid TikTok URL');
                 return;
             }
-            
+
             // Loading state
             submitBtn.disabled = true;
             submitBtn.innerHTML = `
                 <span style="display: inline-block; animation: spin 1s linear infinite;">↻</span> Processing...
             `;
-            
+
             try {
                 // In a real implementation, you would call your backend API here
                 // For demo purposes, we'll simulate the API response with mock data
                 await new Promise(resolve => setTimeout(resolve, 1500));
-                
-                document.getElementById('downloadForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            const videoUrl = document.getElementById('video_url').value;
-            const response = await fetch('/download', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams({ video_url: videoUrl })
-            });
-            const links = await response.json();
-            document.getElementById('links').innerHTML = Object.keys(links).map(text => `<a href="${links[text]}" target="_blank">${text}</a>`).join('<br>');
-        });
-                
+
+                document.getElementById('downloadForm').addEventListener('submit', async function (event) {
+                    event.preventDefault();
+                    const videoUrl = document.getElementById('video_url').value;
+                    const response = await fetch('/download', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams({ video_url: videoUrl })
+                    });
+                    const links = await response.json();
+                    document.getElementById('links').innerHTML = Object.keys(links).map(text => `<a href="${links[text]}" target="_blank">${text}</a>`).join('<br>');
+                });
+
                 // Success animation
                 linksContainer.style.animation = 'fadeIn 0.5s';
                 setTimeout(() => linksContainer.style.animation = '', 500);
-                
+
             } catch (error) {
                 alert('Error processing your request. Please try again.');
                 console.error(error);
@@ -637,14 +648,15 @@
                 const centerY = rect.height / 2;
                 const angleY = (x - centerX) / 20;
                 const angleX = (centerY - y) / 20;
-                
+
                 card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-15px) scale(1.03)`;
             });
-            
+
             card.addEventListener('mouseleave', () => {
                 card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0) scale(1)';
             });
         });
     </script>
 </body>
+
 </html>
